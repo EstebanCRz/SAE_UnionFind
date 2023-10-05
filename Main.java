@@ -91,7 +91,6 @@ public class Main {
         }
     }
 
-
     private static boolean isInteger(String input) {
         //Pass in string
         try { //Try to make the input into an integer

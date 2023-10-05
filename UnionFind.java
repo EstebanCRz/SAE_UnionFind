@@ -38,25 +38,24 @@ public class UnionFind {
 
     // Isoler un élément en le retirant de son groupe
     public void isolate(int x) {
-        int FuturChefX = x;
-        int ChefX = TrouverChef(x);
-        if (ChefX == x){
+        if (TrouverChef(x) != x){
+            ami[x] = x;
+        }
+        else {
+            int FuturChefX = -1;
             //il est chef alors on cherche le futur chef
             for (int i = x+1; i < ami.length-1; i++) {
                 if (ami[i] == x) {
-                    FuturChefX = ami[i];
+                    FuturChefX = i;
                     break;
                 }
             }
             //on ajoute futurchefX au ancien amis de x
-            for (int i = FuturChefX+1; i < ami.length-1; i++) {
+            for (int i = FuturChefX; i < ami.length-1; i++) {
                 if (ami[i] == x) {
                     ami[i] = FuturChefX;
                 }
             }
-        }
-        else{
-            ami[x] = x;
         }
     }
 
