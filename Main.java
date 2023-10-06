@@ -2,91 +2,111 @@ import java.util.Scanner;
 
 
 public class Main {
+    static String fonctionName = "q";
+    static String ami1 = null;
+    static String ami2 = null;
+    static int nbparam = 0;
+    static boolean ok = true;
+    static boolean BonNum = true;
+    static int population = 10;
+
+    static UnionFind uf = new UnionFind(population);
+
     public static void main(String[] args) {
         boolean ok = true;
         boolean BonNum = true;
-        String fonctionName = null;
-        String ami1 = null;
-        String ami2 = null;
-        int nbparam = 0;
-        int population = 10;
-        UnionFind uf = new UnionFind(population);
-
-        System.out.println("Pour ajouter une personne :    \"ajouter\"");
-        System.out.println("Pour lier des amis :           \"lier valeurs1 valeurs2\"");
-        System.out.println("Pour isoler une personne :     \"isoler valeurs1\"");
-        System.out.println("Pour savoir si ils sont amis : \"ami valeurs1 valeurs2\"");
-        System.out.println("Pour quitter :                 \"q\"");
-
+        Affichage.regle();
         Scanner scan = new Scanner(System.in);
 
         while (ok) {
             String line = scan.nextLine();
-            String[] parts = line.split(" ");
-
-            if (parts.length > 0) {
-                fonctionName = parts[0];
-                nbparam = parts.length - 1;
-                if (nbparam >= 1) {
-                    ami1 = parts[1];
-                    if (!isInteger(ami1)) {
-                        BonNum = false;
-                    }
-                }
-                if (nbparam == 2) {
-                    ami2 = parts[2];
-                    if (!isInteger(ami2)) {
-                        BonNum = false;
-                    }
-                }
-            }
-
+            separer_valeur(line);
             if (BonNum){
-                switch (fonctionName) {
-                    case "lier":
-                        if (nbparam==2) {
-                            uf.union(Integer.parseInt(ami1), Integer.parseInt(ami2));
-                        }
-                        else BonNum = false;
-                        break;
-
-                    case "isoler":
-                        if (nbparam==1) {
-                            uf.isolate(Integer.parseInt(ami1));
-                        }
-                        else BonNum = false;
-                        break;
-
-                    case "ami":
-                        if (nbparam==2) {
-                            uf.areFriends(Integer.parseInt(ami1), Integer.parseInt(ami2));
-                        }
-                        else BonNum = false;
-                        break;
-
-                    case "ajouter":
-                        if (nbparam==2) {
-                            uf.addElement();
-                            population++;
-                        }
-                        else BonNum = false;
-                        break;
-
-                    case "q":
-                        if (nbparam==0) {
-                            System.out.println("Au Revoir");
-                            ok = false;
-                        }
-                        break;
-
-                    default:
-                        System.out.println("vous avez mal écrit la fonction");
-                }
+                quel_fonction();
             }
             if (!BonNum) {
-                System.out.println("vous avez mal écrit les paramètres");
+                Affichage.erreur_param();
                 BonNum = true;
                 scan.nextLine();
+            }
+        }
+    }
+
+    private static void quel_fonction() {
+        switch (fonctionName) {
+            case "lier":
+                if (nbparam==2) {
+                    uf.union(Integer.parseInt(ami1), Integer.parseInt(ami2));
+                }
+                else {
+                    BonNum = false;
+                    Affichage.erreur_nb_param();
+                }
+                break;
+
+            case "isoler":
+                if (nbparam==1) {
+                    uf.isolate(Integer.parseInt(ami1));
+                }
+                else {
+                    BonNum = false;
+                    Affichage.erreur_nb_param();
+                }
+                break;
+
+            case "ami":
+                if (nbparam==2) {
+                    uf.areFriends(Integer.parseInt(ami1), Integer.parseInt(ami2));
+                }
+                else {
+                    BonNum = false;
+                    Affichage.erreur_nb_param();
+                }
+                break;
+
+            case "ajouter":
+                if (nbparam==0) {
+                    uf.addElement();
+                    population++;
+                }
+                else {
+                    BonNum = false;
+                    Affichage.erreur_nb_param();
+                }
+                break;
+
+            case "q":
+                if (nbparam==0) {
+                    System.out.println("Au Revoir");
+                    ok = false;
+                }
+                else Affichage.erreur_nb_param();
+                break;
+
+            default:
+                Affichage.erreur_fonction();
+        }
+    }
+
+    private static void separer_valeur(String line) {
+        String[] parts = line.split(" ");
+
+        if (parts.length > 0) {
+            fonctionName = parts[0];
+            nbparam = parts.length - 1;
+            if (nbparam >= 1) {
+                ami1 = parts[1];
+                if (!isInteger(ami1)) {
+                    Affichage.erreur_param();
+                    BonNum = false;
+                }
+            }
+            if (nbparam == 2) {
+                ami2 = parts[2];
+                if (!isInteger(ami2)) {
+                    Affichage.erreur_param();
+                    BonNum = false;
+                }
             }
         }
     }
