@@ -26,7 +26,6 @@ public class Main {
             scan.reset();
         }
     }
-
     private static void quel_fonction() {
         switch (fonctionName) {
             case "lier":

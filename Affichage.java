@@ -2,7 +2,6 @@ public class Affichage {
     public static void erreur_param() {
         System.out.println("vous avez mal écrit les paramètres");
     }
-
     public static void erreur_nb_param() {
         System.out.println("vous avez mal écrit les paramètres");
     }
