@@ -6,29 +6,24 @@ public class Main {
     static String ami1 = null;
     static String ami2 = null;
     static int nbparam = 0;
-    static boolean ok = true;
-    static boolean BonNum = true;
     static int population = 10;
-
+    static boolean ok = true;
+    static Scanner scan = new Scanner(System.in);
     static UnionFind uf = new UnionFind(population);
 
     public static void main(String[] args) {
-        boolean ok = true;
-        boolean BonNum = true;
         Affichage.regle();
-        Scanner scan = new Scanner(System.in);
 
         while (ok) {
             String line = scan.nextLine();
             separer_valeur(line);
-            if (BonNum){
+            if (valeurOK(nbparam)) {
                 quel_fonction();
             }
-            if (!BonNum) {
+            else{
                 Affichage.erreur_param();
-                BonNum = true;
-                scan.nextLine();
             }
+            scan.reset();
         }
     }
 
@@ -39,8 +34,8 @@ public class Main {
                     uf.union(Integer.parseInt(ami1), Integer.parseInt(ami2));
                 }
                 else {
-                    BonNum = false;
                     Affichage.erreur_nb_param();
+                    scan.nextLine();
                 }
                 break;
 
@@ -49,8 +44,8 @@ public class Main {
                     uf.isolate(Integer.parseInt(ami1));
                 }
                 else {
-                    BonNum = false;
                     Affichage.erreur_nb_param();
+                    scan.nextLine();
                 }
                 break;
 
@@ -59,8 +54,8 @@ public class Main {
                     uf.areFriends(Integer.parseInt(ami1), Integer.parseInt(ami2));
                 }
                 else {
-                    BonNum = false;
                     Affichage.erreur_nb_param();
+                    scan.nextLine();
                 }
                 break;
 
@@ -70,8 +65,8 @@ public class Main {
                     population++;
                 }
                 else {
-                    BonNum = false;
                     Affichage.erreur_nb_param();
+                    scan.nextLine();
                 }
                 break;
 
@@ -90,25 +85,26 @@ public class Main {
 
     private static void separer_valeur(String line) {
         String[] parts = line.split(" ");
+        nbparam = parts.length - 1;
 
-        if (parts.length > 0) {
+        if (nbparam >= 0) {
             fonctionName = parts[0];
-            nbparam = parts.length - 1;
             if (nbparam >= 1) {
                 ami1 = parts[1];
-                if (!isInteger(ami1)) {
-                    Affichage.erreur_param();
-                    BonNum = false;
-                }
             }
             if (nbparam == 2) {
                 ami2 = parts[2];
-                if (!isInteger(ami2)) {
-                    Affichage.erreur_param();
-                    BonNum = false;
-                }
             }
         }
+    }
+
+    private static boolean valeurOK(int nbparam){
+        return switch (nbparam) {
+            case 0 -> true;
+            case 1 -> isInteger(ami1);
+            case 2 -> isInteger(ami2);
+            default -> false;
+        };
     }
 
     private static boolean isInteger(String input) {
