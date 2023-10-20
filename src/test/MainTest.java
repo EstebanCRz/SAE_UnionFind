@@ -39,7 +39,7 @@ public class MainTest {
                     }
                     long f = System.nanoTime();
                     long t = f-d;
-                    System.out.println(t/1_000+" millisecondes");
+                    System.out.println(t/1_000_000+" millisecondes");
 
                 } else {
                     Display.error_nb_param();
@@ -55,7 +55,7 @@ public class MainTest {
                     }
                     long f = System.nanoTime();
                     long t = f-d;
-                    System.out.println(t/1_000+" millisecondes");
+                    System.out.println(t/1_000_000+" millisecondes");
                 } else {
                     Display.error_nb_param();
                 }
@@ -78,7 +78,7 @@ public class MainTest {
                     }
                     long f = System.nanoTime();
                     long t = f-d;
-                    System.out.println(t/1_000+" millisecondes");
+                    System.out.println(t/1_000_000+" millisecondes");
                 } else {
                     Display.error_nb_param();
                 }
