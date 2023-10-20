@@ -1,7 +1,7 @@
 package src;
 
-import java.util.Scanner;
 
+import java.util.Scanner;
 
 public class Main {
     static String fonctionName = "q";

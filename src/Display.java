@@ -1,5 +1,6 @@
 package src;
 
+
 public class Display {
     public static void error_param() {
         System.out.println("vous avez mal écrit les paramètres");
