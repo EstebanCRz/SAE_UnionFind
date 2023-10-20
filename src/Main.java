@@ -1,13 +1,12 @@
 package src;
 
-import src.Affichage;
 import java.util.Scanner;
 
 
 public class Main {
     static String fonctionName = "q";
-    static String valeur1 = null;
-    static String valeur2 = null;
+    static String Value1 = null;
+    static String Value2 = null;
     static int nbparam = 0;
     static int population = 10;
     static boolean ok = true;
@@ -15,92 +14,87 @@ public class Main {
     static UnionFind uf = new UnionFind(population);
 
     public static void main(String[] args) {
-        Affichage.regle();
+        Display.rules();
 
         while (ok) {
             String line = scan.nextLine();
-            separer_valeur(line);
-            if (valeurOK()) {
-                quel_fonction();
-            }
-            else{
-                Affichage.erreur_param();
+            ParseLine(line);
+            if (IsValueOK()) {
+                WhichFunction();
+            } else {
+                Display.error_param();
             }
             scan.reset();
         }
     }
-    private static void quel_fonction() {
+
+    private static void WhichFunction() {
         switch (fonctionName) {
             case "lier":
-                if (nbparam==2) {
-                    uf.union(Integer.parseInt(valeur1), Integer.parseInt(valeur2));
-                }
-                else {
-                    Affichage.erreur_nb_param();
+                if (nbparam == 2) {
+                    uf.union(Integer.parseInt(Value1), Integer.parseInt(Value2));
+                } else {
+                    Display.error_nb_param();
                 }
                 break;
 
             case "isoler":
-                if (nbparam==1) {
-                    uf.isolate(Integer.parseInt(valeur1));
-                }
-                else {
-                    Affichage.erreur_nb_param();
+                if (nbparam == 1) {
+                    uf.isolate(Integer.parseInt(Value1));
+                } else {
+                    Display.error_nb_param();
                 }
                 break;
 
             case "ami":
-                if (nbparam==2) {
-                    uf.areFriends(Integer.parseInt(valeur1), Integer.parseInt(valeur2));
-                }
-                else {
-                    Affichage.erreur_nb_param();
+                if (nbparam == 2) {
+                    uf.areFriends(Integer.parseInt(Value1), Integer.parseInt(Value2));
+                } else {
+                    Display.error_nb_param();
                 }
                 break;
 
             case "ajouter":
-                if (nbparam==0) {
+                if (nbparam == 0) {
                     uf.addElement();
                     population++;
-                }
-                else {
-                    Affichage.erreur_nb_param();
+                } else {
+                    Display.error_nb_param();
                 }
                 break;
 
             case "q":
-                if (nbparam==0) {
+                if (nbparam == 0) {
                     System.out.println("Au Revoir");
                     ok = false;
-                }
-                else Affichage.erreur_nb_param();
+                } else Display.error_nb_param();
                 break;
 
             default:
-                Affichage.erreur_fonction();
+                Display.error_fonction();
         }
     }
 
-    public static void separer_valeur(String line) {
+    public static void ParseLine(String line) {
         String[] parts = line.split(" ");
         nbparam = parts.length - 1;
 
         if (nbparam >= 0) {
             fonctionName = parts[0];
             if (nbparam >= 1) {
-                valeur1 = parts[1];
+                Value1 = parts[1];
             }
             if (nbparam == 2) {
-                valeur2 = parts[2];
+                Value2 = parts[2];
             }
         }
     }
 
-    private static boolean valeurOK(){
+    private static boolean IsValueOK() {
         return switch (nbparam) {
             case 0 -> true;
-            case 1 -> isInteger(valeur1);
-            case 2 -> (isInteger(valeur2) && isInteger(valeur2));
+            case 1 -> isInteger(Value1);
+            case 2 -> (isInteger(Value2) && isInteger(Value2));
             default -> false;
         };
     }
@@ -108,10 +102,9 @@ public class Main {
     private static boolean isInteger(String input) {
         //Pass in string
         try { //Try to make the input into an integer
-            Integer.parseInt( input );
+            Integer.parseInt(input);
             return true; //Return true if it works
-        }
-        catch( Exception e ) {
+        } catch (Exception e) {
             return false; //If it doesn't work return false
         }
     }

@@ -1,37 +1,37 @@
 package src;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 
 public class UnionFind {
-    private int[] peuple;
+    private ArrayList<Integer> Nation;
 
     public UnionFind(int n) {
-        peuple = new int[n];
+        Nation = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
-            peuple[i] = i;
+            Nation.add(i);
         }
     }
 
-    public int TrouverChef(int x) {
-        return peuple[x];
+    public int FindChef(int x) {
+        return Nation.get(x);
     }
 
     // Fusionner les groupes
     public void union(int x, int y) {
-        int ChefX = TrouverChef(x);
-        int ChefY = TrouverChef(y);
+        int ChefX = FindChef(x);
+        int ChefY = FindChef(y);
 
         if (ChefX != ChefY) {
             if (ChefX < ChefY) {
-                for (int i = ChefY; i < peuple.length - 1; i++) {
-                    if (peuple[i] == ChefY) {
-                        peuple[i] = ChefX;
+                for (int i = ChefY; i < Nation.size(); i++) {
+                    if (Nation.get(i) == ChefY) {
+                        Nation.set(i, ChefX);
                     }
                 }
-            } else{
-                for (int i = ChefX; i < peuple.length - 1; i++) {
-                    if (peuple[i] == ChefX) {
-                        peuple[i] = ChefY;
+            } else {
+                for (int i = ChefX; i < Nation.size(); i++) {
+                    if (Nation.get(i) == ChefX) {
+                        Nation.set(i, ChefY);
                     }
                 }
             }
@@ -40,26 +40,22 @@ public class UnionFind {
 
     // Isoler un élément en le retirant de son groupe
     public void isolate(int x) {
-        if (TrouverChef(x) != x){
-            peuple[x] = x;
-        }
-        else {
+        if (FindChef(x) != x) {
+            Nation.set(x, x);
+        } else {
             int FuturChefX = -1;
-            //il est chef alors on cherche le futur chef
-            for (int i = x+1; i < peuple.length-1; i++) {
-                if (peuple[i] == x) {
+            for (int i = x + 1; i < Nation.size(); i++) {
+                if (Nation.get(i) == x) {
                     FuturChefX = i;
                     break;
                 }
             }
-            if (FuturChefX == -1){
-                //il est son seul ami
+            if (FuturChefX == -1) {
                 return;
             }
-            //on ajoute futurchefX au ancien amis de x
-            for (int i = FuturChefX; i < peuple.length-1; i++) {
-                if (peuple[i] == x) {
-                    peuple[i] = FuturChefX;
+            for (int i = FuturChefX; i < Nation.size(); i++) {
+                if (Nation.get(i) == x) {
+                    Nation.set(i, FuturChefX);
                 }
             }
         }
@@ -67,17 +63,13 @@ public class UnionFind {
 
     // Ajouter une personne
     public void addElement() {
-        int n = peuple.length;
-        peuple = Arrays.copyOf(peuple, n + 1);
-        peuple[n] = n;
+        Nation.add(Nation.size());
     }
-
     public void areFriends(int x, int y) {
-        if (TrouverChef(x) == TrouverChef(y)){
-            System.out.println(x +" and "+ y +" are friends");
-        }
-        else{
-            System.out.println(x +" and "+ y +" are not friends");
+        if (FindChef(x) == FindChef(y)) {
+            Display.friend(x, y);
+        } else {
+            Display.Notfriend(x, y);
         }
     }
 }
