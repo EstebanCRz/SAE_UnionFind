@@ -20,7 +20,7 @@ public class MainTest {
         while (ok) {
             String line = scan.nextLine();
             ParseLine(line);
-            if (valeurOK()) {
+            if (ValiParameters()) {
                 WhichFunction();
             } else {
                 Display.error_param();
@@ -40,7 +40,7 @@ public class MainTest {
                     }
                     long f = System.nanoTime();
                     long t = f-d;
-                    System.out.println(t/1_000_000+" millisecondes");
+                    System.out.println(t/1_000_000+" microsecondes");
 
                 } else {
                     Display.error_nb_param();
@@ -56,7 +56,7 @@ public class MainTest {
                     }
                     long f = System.nanoTime();
                     long t = f-d;
-                    System.out.println(t/1_000_000+" millisecondes");
+                    System.out.println(t/1_000_000+" microsecondes");
                 } else {
                     Display.error_nb_param();
                 }
@@ -79,7 +79,7 @@ public class MainTest {
                     }
                     long f = System.nanoTime();
                     long t = f-d;
-                    System.out.println(t/1_000_000+" millisecondes");
+                    System.out.println(t/1_000_000+" microsecondes");
                 } else {
                     Display.error_nb_param();
                 }
@@ -111,7 +111,7 @@ public class MainTest {
         }
     }
 
-    private static boolean valeurOK() {
+    private static boolean ValiParameters() {
         return switch (nbparam) {
             case 0 -> true;
             case 1 -> isInteger(valeur1);

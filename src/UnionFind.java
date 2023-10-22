@@ -16,6 +16,7 @@ public class UnionFind {
     public int FindChef(int x) {
         return Nation.get(x);
     }
+    
 
     // Fusionner les groupes
     public void union(int x, int y) {

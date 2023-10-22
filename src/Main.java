@@ -1,26 +1,27 @@
 package src;
 
-
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    static String fonctionName = "q";
-    static String Value1 = null;
-    static String Value2 = null;
-    static int nbparam = 0;
-    static int population = 10;
-    static boolean ok = true;
+
+    private final static int FUNCTION = 0;
+    private final static int VALUE1 = 1;
+    private final static int VALUE2 = 2;
+
+    static int population_size = 10;
+    static boolean running = true;
     static Scanner scan = new Scanner(System.in);
-    static UnionFind uf = new UnionFind(population);
+    static UnionFind uf = new UnionFind(population_size);
 
     public static void main(String[] args) {
         Display.rules();
 
-        while (ok) {
+        while (running) {
             String line = scan.nextLine();
-            ParseLine(line);
-            if (IsValueOK()) {
-                WhichFunction();
+            ArrayList<String> argslist = ParseLine(line);
+            if (ValidParameters(argslist)) {
+                WhichFunction(argslist);
             } else {
                 Display.error_param();
             }
@@ -28,45 +29,45 @@ public class Main {
         }
     }
 
-    private static void WhichFunction() {
-        switch (fonctionName) {
+    private static void WhichFunction(ArrayList<String> args) {
+        switch (args.get(FUNCTION)) {
             case "lier":
-                if (nbparam == 2) {
-                    uf.union(Integer.parseInt(Value1), Integer.parseInt(Value2));
+                if (args.size() == 3) {
+                    uf.union(Integer.parseInt(args.get(VALUE1)), Integer.parseInt(args.get(VALUE2)));
                 } else {
                     Display.error_nb_param();
                 }
                 break;
 
             case "isoler":
-                if (nbparam == 1) {
-                    uf.isolate(Integer.parseInt(Value1));
+                if (args.size() == 2) {
+                    uf.isolate(Integer.parseInt(args.get(VALUE1)));
                 } else {
                     Display.error_nb_param();
                 }
                 break;
 
             case "ami":
-                if (nbparam == 2) {
-                    uf.areFriends(Integer.parseInt(Value1), Integer.parseInt(Value2));
+                if (args.size() == 3) {
+                    uf.areFriends(Integer.parseInt(args.get(VALUE1)), Integer.parseInt(args.get(VALUE2)));
                 } else {
                     Display.error_nb_param();
                 }
                 break;
 
             case "ajouter":
-                if (nbparam == 0) {
+                if (args.size() == 1) {
                     uf.addElement();
-                    population++;
+                    population_size++;
                 } else {
                     Display.error_nb_param();
                 }
                 break;
 
-            case "q":
-                if (nbparam == 0) {
+            case "exit":
+                if (args.size() == 1) {
                     System.out.println("Au Revoir");
-                    ok = false;
+                    running = false;
                 } else Display.error_nb_param();
                 break;
 
@@ -75,26 +76,24 @@ public class Main {
         }
     }
 
-    public static void ParseLine(String line) {
-        String[] parts = line.split(" ");
-        nbparam = parts.length - 1;
+    public static ArrayList<String> ParseLine(String line) {
+        String[] words = line.split(" ");
 
-        if (nbparam >= 0) {
-            fonctionName = parts[0];
-            if (nbparam >= 1) {
-                Value1 = parts[1];
-            }
-            if (nbparam == 2) {
-                Value2 = parts[2];
-            }
+        ArrayList<String> ret = new ArrayList<String>();
+
+        for (String s : words) {
+            ret.add(s);
         }
+
+        return ret;
+
     }
 
-    private static boolean IsValueOK() {
-        return switch (nbparam) {
-            case 0 -> true;
-            case 1 -> isInteger(Value1);
-            case 2 -> (isInteger(Value2) && isInteger(Value2));
+    private static boolean ValidParameters(ArrayList<String> args) {
+        return switch (args.size()) {
+            case 1 -> true;
+            case 2 -> isInteger(args.get(VALUE1));
+            case 3 -> (isInteger(args.get(VALUE1)) && isInteger(args.get(VALUE2)));
             default -> false;
         };
     }
