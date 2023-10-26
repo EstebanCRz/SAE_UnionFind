@@ -1,6 +1,5 @@
 package src;
 
-
 import java.util.ArrayList;
 
 public class UnionFind {
@@ -40,13 +39,14 @@ public class UnionFind {
         }
     }
 
+
     // Isoler un élément en le retirant de son groupe
     public void isolate(int x) {
         if (FindChef(x) != x) {
             Nation.set(x, x);
         } else {
             int FuturChefX = -1;
-            for (int i = x + 1; i < Nation.size(); i++) {
+            for (int i = x+1; i < Nation.size(); i++) {
                 if (Nation.get(i) == x) {
                     FuturChefX = i;
                     break;

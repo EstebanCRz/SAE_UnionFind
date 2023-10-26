@@ -2,14 +2,17 @@ package src.test;
 
 
 import src.*;
+
+import java.util.Random;
 import java.util.Scanner;
 
 public class MainTest {
+    static Random r = new Random();
     static String fonctionName = "q";
     static String valeur1 = null;
     static String valeur2 = null;
     static int nbparam = 0;
-    static int population = 1000;
+    static int population = 1;
     static boolean ok = true;
     static Scanner scan = new Scanner(System.in);
     static UnionFind uf = new UnionFind(population);
@@ -20,7 +23,7 @@ public class MainTest {
         while (ok) {
             String line = scan.nextLine();
             ParseLine(line);
-            if (ValiParameters()) {
+            if (ValidParameters()) {
                 WhichFunction();
             } else {
                 Display.error_param();
@@ -36,7 +39,9 @@ public class MainTest {
                     int iterations = Integer.parseInt(valeur1);
                     long d = System.nanoTime();
                     for (int i = 0; i < iterations-1; i++) {
-                        uf.union(i, i + 1);
+                        uf.union(r.nextInt((iterations) + 1), r.nextInt((iterations) + 1));
+                        //random prend 0.0036 microsecondes par itération
+                        //soit 0.36 millisecondes pour 100 000 itérations
                     }
                     long f = System.nanoTime();
                     long t = f-d;
@@ -52,7 +57,9 @@ public class MainTest {
                     int iterations = Integer.parseInt(valeur1);
                     long d = System.nanoTime();
                     for (int i = 0; i < iterations; i++) {
-                        uf.isolate(i);
+                        uf.isolate(r.nextInt((iterations) + 1));
+                        //random prend 0.0036 microsecondes par itération
+                        //soit 0.36 millisecondes pour 100 000 itérations
                     }
                     long f = System.nanoTime();
                     long t = f-d;
@@ -111,7 +118,7 @@ public class MainTest {
         }
     }
 
-    private static boolean ValiParameters() {
+    private static boolean ValidParameters() {
         return switch (nbparam) {
             case 0 -> true;
             case 1 -> isInteger(valeur1);
