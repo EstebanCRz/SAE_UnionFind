@@ -3,19 +3,19 @@ package src;
 import java.util.ArrayList;
 
 public class UnionFind {
-    private ArrayList<Integer> Nation;
+    private ArrayList<Integer> peuple;
 
     public UnionFind(int n) {
-        Nation = new ArrayList<>(n);
+        peuple = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
-            Nation.add(i);
+            peuple.add(i);
         }
     }
 
     public int FindChef(int x) {
-        return Nation.get(x);
+        return peuple.get(x);
     }
-    
+
 
     // Fusionner les groupes
     public void union(int x, int y) {
@@ -24,15 +24,15 @@ public class UnionFind {
 
         if (ChefX != ChefY) {
             if (ChefX < ChefY) {
-                for (int i = ChefY; i < Nation.size(); i++) {
-                    if (Nation.get(i) == ChefY) {
-                        Nation.set(i, ChefX);
+                for (int i = ChefY; i < peuple.size(); i++) {
+                    if (peuple.get(i) == ChefY) {
+                        peuple.set(i, ChefX);
                     }
                 }
             } else {
-                for (int i = ChefX; i < Nation.size(); i++) {
-                    if (Nation.get(i) == ChefX) {
-                        Nation.set(i, ChefY);
+                for (int i = ChefX; i < peuple.size(); i++) {
+                    if (peuple.get(i) == ChefX) {
+                        peuple.set(i, ChefY);
                     }
                 }
             }
@@ -43,11 +43,11 @@ public class UnionFind {
     // Isoler un élément en le retirant de son groupe
     public void isolate(int x) {
         if (FindChef(x) != x) {
-            Nation.set(x, x);
+            peuple.set(x, x);
         } else {
             int FuturChefX = -1;
-            for (int i = x+1; i < Nation.size(); i++) {
-                if (Nation.get(i) == x) {
+            for (int i = x+1; i < peuple.size(); i++) {
+                if (peuple.get(i) == x) {
                     FuturChefX = i;
                     break;
                 }
@@ -55,9 +55,9 @@ public class UnionFind {
             if (FuturChefX == -1) {
                 return;
             }
-            for (int i = FuturChefX; i < Nation.size(); i++) {
-                if (Nation.get(i) == x) {
-                    Nation.set(i, FuturChefX);
+            for (int i = FuturChefX+1; i < peuple.size(); i++) {
+                if (peuple.get(i) == x) {
+                    peuple.set(i, FuturChefX);
                 }
             }
         }
@@ -65,13 +65,10 @@ public class UnionFind {
 
     // Ajouter une personne
     public void addElement() {
-        Nation.add(Nation.size());
+        peuple.add(peuple.size());
     }
-    public void areFriends(int x, int y) {
-        if (FindChef(x) == FindChef(y)) {
-            Display.friend(x, y);
-        } else {
-            Display.Notfriend(x, y);
-        }
+
+    public boolean areFriends(int x, int y) {
+        return FindChef(x) == FindChef(y);
     }
 }

@@ -1,6 +1,7 @@
 package src;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -49,7 +50,15 @@ public class Main {
 
             case "ami":
                 if (args.size() == 3) {
-                    uf.areFriends(Integer.parseInt(args.get(VALUE1)), Integer.parseInt(args.get(VALUE2)));
+                    int x = Integer.parseInt(args.get(VALUE1));
+                    int y =Integer.parseInt(args.get(VALUE2));
+                    if(uf.areFriends(x,y)) {
+                        Display.Friends(x, y);
+                        break;
+                    }
+                    Display.NotFriends(x, y);
+                    break;
+
                 } else {
                     Display.error_nb_param();
                 }
@@ -62,6 +71,10 @@ public class Main {
                 } else {
                     Display.error_nb_param();
                 }
+                break;
+
+            case "help":
+                Display.rules();
                 break;
 
             case "exit":
@@ -79,13 +92,7 @@ public class Main {
     public static ArrayList<String> ParseLine(String line) {
         String[] words = line.split(" ");
 
-        ArrayList<String> ret = new ArrayList<String>();
-
-        for (String s : words) {
-            ret.add(s);
-        }
-
-        return ret;
+        return new ArrayList<String>(Arrays.asList(words));
 
     }
 
